@@ -38,13 +38,11 @@ class Model:
             if self._grafo.in_degree(i) == 0:
                 parziale = [i]
                 self.ricorsione(parziale)
-        print(self.solBest)
         return self.solBest, self.ricavo
 
     def ricorsione(self, parziale):
         if self._grafo.out_degree(parziale[-1])==0:
             if len(self.solBest) < len(parziale):
-                print("new best")
                 self.solBest = copy.deepcopy(parziale)
 
         for n in self._grafo.successors(parziale[-1]):
