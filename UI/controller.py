@@ -59,7 +59,14 @@ class Controller:
         self._view.update_page()
 
     def handle_path(self, e):
-        pass
+        self._view.txt_result.controls.clear()
+        best, dizio = self._model.getBestPath()
+        self._view.txt_result.controls.append(
+        ft.Text(f"Percorso che massimizza la lunghezza: "))
+        for b in best:
+            self._view.txt_result.controls.append(ft.Text(f"Prodotto {b.Product_number} ricavo totale {dizio[b.Product_number]}"))
+        self._view.update_page()
+
 
     def readMethod(self, e):
         if e.control.data is None:

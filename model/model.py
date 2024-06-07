@@ -1,3 +1,5 @@
+import copy
+
 import networkx as nx
 from numpy import double
 
@@ -10,6 +12,7 @@ class Model:
         self.nodi = []
         self.reddito = {}
         self.ricavo = {}
+        self.solBest = []
 
     def buildGraph(self, year, method, s):
         self._grafo.clear()
@@ -29,6 +32,27 @@ class Model:
                         self._grafo.add_edge(n1, n2)
                     elif prof1 >= (s+1)*double(prof2):
                         self._grafo.add_edge(n2, n1)
+
+    def getBestPath(self):
+        for i in self._grafo.nodes:
+            if self._grafo.in_degree(i) == 0:
+                parziale = [i]
+                self.ricorsione(parziale)
+        print(self.solBest)
+        return self.solBest, self.ricavo
+
+    def ricorsione(self, parziale):
+        if self._grafo.out_degree(parziale[-1])==0:
+            if len(self.solBest) < len(parziale):
+                print("new best")
+                self.solBest = copy.deepcopy(parziale)
+
+        for n in self._grafo.successors(parziale[-1]):
+            if n not in parziale:
+                parziale.append(n)
+                self.ricorsione(parziale)
+                parziale.pop()
+
 
     def getMoreRedditizio(self):
         self.reddito = {}
